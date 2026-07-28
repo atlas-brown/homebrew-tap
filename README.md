@@ -2,15 +2,15 @@
 
 ## How do I install these formulae?
 
-`brew install davidkovach-fuentes/tap/<formula>`
+`brew install davidkovach-fuentes/tap/rt`
 
-Or `brew tap davidkovach-fuentes/tap` and then `brew install <formula>`.
+Or `brew tap davidkovach-fuentes/tap` and then `brew install rt`.
 
 Or, in a `brew bundle` `Brewfile`:
 
 ```ruby
 tap "davidkovach-fuentes/tap"
-brew "<formula>"
+brew "rt"
 ```
 
 ## Documentation
