@@ -5,7 +5,7 @@ class Rt < Formula
   license :cannot_represent
   # TODO: replace fields with atlas/rt
   url "https://github.com/davidkovach-fuentes/rt/releases/download/v#{version}/rt-#{version}.tar.gz"
-  sha256 'sha256:3e70ed713350a5ca7691ebf441b1f5abd15f3be4a2cf1506f682cdf01d63b38e'
+  sha256 '3e70ed713350a5ca7691ebf441b1f5abd15f3be4a2cf1506f682cdf01d63b38e'
 
   def install
     bin.install 'scripts/run-in-container.sh' => 'rt'
