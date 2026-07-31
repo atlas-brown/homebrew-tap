@@ -13,31 +13,31 @@ See more at https://docs.brew.sh/Taps
 ## How do I install packages from here?
 
 ```sh
-brew install atlas-group/tap/name
+brew install atlas-brown/tap/name
 ```
 
 You can also only add the tap which makes formulae within it available in search results (`brew search` output):
 
 ```sh
-brew tap atlas-group/tap
+brew tap atlas-brown/tap
 ```
 
 Note: to clone the tap via SSH you will need to use:
 
 ```sh
-brew tap atlas-group/tap https://github.com/atlas-group/homebrew-tap
+brew tap atlas-brown/tap https://github.com/atlas-brown/homebrew-tap
 ```
 
 While you may search across taps, it is necessary to always use
-fully qualified name (incl. the `atlas-group/tap/` prefix)
+fully qualified name (incl. the `atlas-brown/tap/` prefix)
 when referring to formulae in external taps such as this one
 outside of search.
 
 ## What packages are available?
 
 ```sh
-brew install atlas-group/tap/rt
-brew install atlas-group/tap/sash
+brew install atlas-brown/tap/rt
+brew install atlas-brown/tap/sash
 ```
 
 Both formulae currently require [Docker](https://docs.docker.com/get-docker/).

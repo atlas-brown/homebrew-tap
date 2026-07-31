@@ -1,9 +1,7 @@
 class Sash < Formula
   desc "Static analysis for the Unix shell (runs via Docker)"
   homepage "https://github.com/atlas-brown/sash"
-  # TODO: replace fields with atlas-brown/SaSh
-  url "https://github.com/davidkovach-fuentes/sash/archive/refs/tags/v0.1.1.tar.gz"
-  # url "https://github.com/atlas-group/sash/archive/refs/tags/v0.1.1.tar.gz"
+  url "https://github.com/atlas-brown/sash/archive/refs/tags/v0.1.1.tar.gz"
   sha256 "1db19b40a26598da6087de20b9a2f9e829085161266211c68201744fc6126ca4"
   license "MIT"
 
@@ -14,7 +12,7 @@ class Sash < Formula
     libexec.install "scripts/sash-docker-pull.sh"
     (bin/"sash").write <<~EOS
       #!/bin/bash
-      export SASH_IMAGE="${SASH_IMAGE:-ghcr.io/davidkovach-fuentes/sash:#{version}}"
+      export SASH_IMAGE="${SASH_IMAGE:-ghcr.io/atlas-brown/sash:#{version}}"
       exec "#{libexec}/sash-docker-pull.sh" "$@"
     EOS
     chmod 0755, bin/"sash"
