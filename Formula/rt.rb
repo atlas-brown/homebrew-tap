@@ -4,8 +4,8 @@ class Rt < Formula
   version '0.1.0'
   license :cannot_represent
   # TODO: replace fields with atlas/rt
-  url "https://github.com/davidkovach-fuentes/rt/releases/download/v#{version}/rt-#{version}.tar.gz"
-  sha256 '3e70ed713350a5ca7691ebf441b1f5abd15f3be4a2cf1506f682cdf01d63b38e'
+  url "https://github.com/davidkovach-fuentes/rt/archive/refs/tags/v0.1.0.tar.gz"
+  sha256 "1d93946042dd1b50969e8862897d633e939f630c5ef7fa33c44e2f3ee238d28b"
 
   depends_on "docker" => :test
 
