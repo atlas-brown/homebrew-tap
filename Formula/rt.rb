@@ -4,7 +4,8 @@ class Rt < Formula
   url "https://github.com/atlas-brown/rt/archive/refs/tags/v0.1.1.tar.gz"
   sha256 "dafd2a5f1c9c36918ab598b14a7b8f99bc194e6b55077acc4219b2347ecb3559"
   license :cannot_represent
-
+  head "https://github.com/atlas-brown/rt.git", branch: "main"
+  
   depends_on "docker" => :test
 
   def install
