@@ -1,8 +1,8 @@
 class Rt < Formula
   desc "Overlay type system for Unix shell pipelines"
   homepage "https://github.com/atlas-brown/rt"
-  url "https://github.com/atlas-brown/rt/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "444944826b27adecfcf120f73e6cad42dea24972bf00269d50417fd07fd9ba0b"
+  url "https://github.com/atlas-brown/rt/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "dafd2a5f1c9c36918ab598b14a7b8f99bc194e6b55077acc4219b2347ecb3559"
   license :cannot_represent
 
   depends_on "docker" => :test
