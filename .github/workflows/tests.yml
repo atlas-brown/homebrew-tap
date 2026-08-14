@@ -42,8 +42,42 @@ jobs:
       - run: brew test-bot --only-setup
 
       - run: brew test-bot --only-tap-syntax
-      - run: brew test-bot --only-formulae
+
+      # Skip building `atlas-brown/try-mac` when it's still a private
+      # repository. TODO(gzgz): drop the filter once CI has a token that can
+      # read atlas-brown/try-mac (fine-grained PAT or GitHub App), or just wait
+      # for the `try-mac` repo to become public.
+      - name: Detect formulae
+        id: formulae-detect
         if: github.event_name == 'pull_request'
+        run: brew test-bot --only-formulae-detect
+
+      - name: Exclude try from formulae under test
+        id: exclude-try
+        if: github.event_name == 'pull_request'
+        shell: bash -euo pipefail {0}
+        env:
+          TESTING: ${{ steps.formulae-detect.outputs.testing_formulae }}
+        run: |
+          testing=""
+          if [[ -n "$TESTING" ]]; then
+            testing="$(printf '%s\n' "$TESTING" | tr ',' '\n' | awk -F/ '$NF != "try"' | paste -sd, -)"
+          fi
+          echo "testing_formulae=$testing" >> "$GITHUB_OUTPUT"
+
+      - name: Run brew test-bot --only-formulae
+        if: github.event_name == 'pull_request' && steps.exclude-try.outputs.testing_formulae != ''
+        shell: bash -euo pipefail {0}
+        env:
+          TESTING: ${{ steps.exclude-try.outputs.testing_formulae }}
+          ADDED: ${{ steps.formulae-detect.outputs.added_formulae }}
+          DELETED: ${{ steps.formulae-detect.outputs.deleted_formulae }}
+        run: |
+          args=(--only-formulae)
+          [[ -n "$TESTING" ]] && args+=(--testing-formulae="$TESTING")
+          [[ -n "$ADDED" ]] && args+=(--added-formulae="$ADDED")
+          [[ -n "$DELETED" ]] && args+=(--deleted-formulae="$DELETED")
+          brew test-bot "${args[@]}"
 
       - name: Upload bottles as artifact
         if: always() && github.event_name == 'pull_request'
