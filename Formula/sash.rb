@@ -1,22 +1,22 @@
 class Sash < Formula
-  desc 'Static analysis for the Unix shell (runs via Docker)'
-  homepage 'https://github.com/atlas-brown/sash'
-  url 'https://github.com/atlas-brown/sash/archive/refs/tags/v0.1.1.tar.gz'
-  sha256 '1db19b40a26598da6087de20b9a2f9e829085161266211c68201744fc6126ca4'
-  license 'MIT'
-  head 'https://github.com/atlas-brown/sash.git', branch: 'main'
+  desc "Static analysis for the Unix shell (runs via Docker)"
+  homepage "https://github.com/atlas-brown/sash"
+  url "https://github.com/atlas-brown/sash/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "1db19b40a26598da6087de20b9a2f9e829085161266211c68201744fc6126ca4"
+  license "MIT"
+  head "https://github.com/atlas-brown/sash.git", branch: "master"
 
-  depends_on 'docker' => :test
+  depends_on "docker" => :test
 
   def install
-    libexec.install 'scripts/sash-docker.sh'
-    libexec.install 'scripts/sash-docker-pull.sh'
-    (bin / 'sash').write <<~EOS
+    libexec.install "scripts/sash-docker.sh"
+    libexec.install "scripts/sash-docker-pull.sh"
+    (bin / "sash").write <<~EOS
       #!/bin/bash
       export SASH_IMAGE="${SASH_IMAGE:-ghcr.io/atlas-brown/sash:#{version}}"
       exec "#{libexec}/sash-docker-pull.sh" "$@"
     EOS
-    chmod 0o755, bin / 'sash'
+    chmod 0755, bin / "sash"
   end
 
   def caveats
@@ -31,8 +31,8 @@ class Sash < Formula
   end
 
   test do
-    assert_predicate bin / 'sash', :executable?
-    assert_match 'docker', shell_output("grep -E 'docker|podman' #{libexec}/sash-docker.sh")
+    assert_predicate bin / "sash", :executable?
+    assert_match "docker", shell_output("grep -E 'docker|podman' #{libexec}/sash-docker.sh")
     assert_match(/usage|help|sash/i, shell_output("#{bin}/sash --help"))
   end
 end
