@@ -5,9 +5,9 @@ class Try < Formula
   # credentials. `GitHub::API.credentials` is Homebrew's own credential lookup:
   # it tries HOMEBREW_GITHUB_API_TOKEN, then the `gh` CLI login, then the macOS
   # keychain -- so most users need no extra setup.
-  url "https://github.com/atlas-brown/try-mac/archive/refs/tags/v0.0.1.tar.gz",
+  url "https://github.com/atlas-brown/try-mac/archive/refs/tags/v0.0.2.tar.gz",
       headers: ["Authorization: Bearer #{GitHub::API.credentials}"]
-  sha256 "248f32b48b855ff34f9b5ce8f016e4438e5284b73ffa66917087820bf1942d48"
+  sha256 "a336c7b9af4146c484e8b6a97436e2fc9aa7e1d33d8e31775c626f6ab1899e4b"
   license :cannot_represent
 
   # `brew install --HEAD atlas-brown/tap/try` builds the tip of `main`. Cloning a
