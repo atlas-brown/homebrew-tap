@@ -42,17 +42,16 @@ class Try < Formula
 
   def caveats
     <<~EOS
-      Don't run `try` as sudo:
+      `try` needs root to perform filesystem rollback. However, DON'T run `try`
+      as root:
 
         try -- <command>
 
-      try starts `eslogger` for you to read Endpoint Security events, and only
-      that part needs root, so it asks for your password. Your command still runs
-      as you. Running the whole of try under sudo would run your command as root
-      as well.
+      `try` automatically pops up a dialog asking for `root` permissions when
+      it needs to.
 
-      The terminal you run it in also needs Full Disk Access, or `eslogger` never
-      becomes ready:
+      The terminal you run it in also needs Full Disk Access. Most developers
+      should already have it enabled; if not, go to:
 
         System Settings > Privacy & Security > Full Disk Access
     EOS
