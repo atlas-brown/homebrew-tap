@@ -5,9 +5,9 @@ class Try < Formula
   # credentials. `GitHub::API.credentials` is Homebrew's own credential lookup:
   # it tries HOMEBREW_GITHUB_API_TOKEN, then the `gh` CLI login, then the macOS
   # keychain -- so most users need no extra setup.
-  url "https://github.com/atlas-brown/try-mac/archive/refs/tags/v0.0.2.tar.gz",
+  url "https://github.com/atlas-brown/try-mac/archive/refs/tags/v0.1.0.tar.gz",
       headers: ["Authorization: Bearer #{GitHub::API.credentials}"]
-  sha256 "a336c7b9af4146c484e8b6a97436e2fc9aa7e1d33d8e31775c626f6ab1899e4b"
+  sha256 "a9bfd13a540ef88242c989f81476c560b961a0dcc1b5baf78c1622639ca57463"
   license :cannot_represent
 
   # `brew install --HEAD atlas-brown/tap/try` builds the tip of `main`. Cloning a
@@ -33,27 +33,27 @@ class Try < Formula
   # nothing else to declare and the build needs no network access.
 
   def install
-    # The package is `try-mac`; the product it builds is `try`.
+    # The package is `try-mac`; the Swift product it builds is `try-core`, a
+    # file-in/file-out worker. The user-facing commands are the two shell
+    # scripts at the repo root -- bin/try (orchestrator) and bin/try-eslogger
+    # (sudo/askpass wrapper). The scripts look for try-core next to themselves
+    # first, then on PATH, so all three must land in prefix `bin/` together.
     system "swift", "build", *std_swift_args,
-           "--product", "try",
+           "--product", "try-core",
            "--scratch-path", buildpath/".build"
-    bin.install ".build/release/try"
+    bin.install ".build/release/try-core", "bin/try", "bin/try-eslogger"
   end
 
   def caveats
     <<~EOS
-      `try` needs root to perform filesystem rollback. However, DON'T run `try`
-      as root:
-
-        try -- <command>
-
-      `try` automatically pops up a dialog asking for `root` permissions when
-      it needs to.
-
-      The terminal you run it in also needs Full Disk Access. Most developers
-      should already have it enabled; if not, go to:
+      `try` needs root only for the event-capture step (starting `eslogger`),
+      and prompts for it with a dialog -- so don't run `try` as root. The
+      terminal also needs Full Disk Access for eslogger to see events:
 
         System Settings > Privacy & Security > Full Disk Access
+
+      `try rollback` needs neither: it restores from the APFS local snapshot
+      taken at run time, via `tmutil`, without asking for a password.
     EOS
   end
 
@@ -61,7 +61,11 @@ class Try < Formula
   # `eslogger`, so the test has to stay with the paths that fail before any of
   # that: `brew test` must not block on a prompt or touch the live system.
   test do
-    assert_match "capture its filesystem changes", shell_output("#{bin}/try --help")
+    # bin/try is a bash script whose usage text goes to stderr, so capture
+    # both streams. The other two paths below fail before any snapshot or
+    # eslogger work: `brew test` must not block on a prompt or touch the live
+    # system.
+    assert_match "capture its filesystem changes", shell_output("#{bin}/try --help 2>&1")
     # Input errors exit 2, and try prints them on stderr.
     assert_match "no command given", shell_output("#{bin}/try 2>&1", 2)
     assert_match "unknown option", shell_output("#{bin}/try --not-an-option -- true 2>&1", 2)
