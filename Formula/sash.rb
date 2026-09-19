@@ -4,7 +4,7 @@ class Sash < Formula
   url "https://github.com/davidkovach-fuentes/sash/archive/refs/tags/v0.1.2.tar.gz"
   sha256 "99a8368674c023c7bd33711de66ff33ed27b2419efa368dc0afccab545691d63"
   license "MIT"
-  head "https://github.com/atlas-brown/sash.git", branch: "master"
+  head "https://github.com/davidkovach-fuentes/sash.git", branch: "docker-image-workflow"
 
   livecheck do
     url :stable
