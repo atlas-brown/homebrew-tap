@@ -1,10 +1,10 @@
 class Sash < Formula
   desc "Static analysis for the Unix shell (runs via Docker)"
   homepage "https://github.com/atlas-brown/sash"
-  url "https://github.com/davidkovach-fuentes/sash/archive/refs/tags/v0.1.2.tar.gz"
-  sha256 "99a8368674c023c7bd33711de66ff33ed27b2419efa368dc0afccab545691d63"
+  url "https://github.com/atals-brown/sash/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "todo: curl -sl 'https://github.com/atlas-brown/sash/archive/refs/tags/v0.1.1.tar.gz' | sha256sum'"
   license "MIT"
-  head "https://github.com/davidkovach-fuentes/sash.git", branch: "docker-image-workflow"
+  head "https://github.com/atlas-brown/sash.git", branch: "master"
 
   livecheck do
     url :stable
