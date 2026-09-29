@@ -26,7 +26,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@df4b09108a1de9d6f995fe68f302b3f68bd6d2ef # 2026.07.20.1
+        uses: Homebrew/actions/setup-homebrew@848c272c7bfe984a197bd4d16383f4c106ec61e6 # 2026.09.21.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -42,8 +42,42 @@ jobs:
       - run: brew test-bot --only-setup
 
       - run: brew test-bot --only-tap-syntax
-      - run: brew test-bot --only-formulae
+
+      # Skip building `atlas-brown/try-mac` when it's still a private
+      # repository. TODO(gzgz): drop the filter once CI has a token that can
+      # read atlas-brown/try-mac (fine-grained PAT or GitHub App), or just wait
+      # for the `try-mac` repo to become public.
+      - name: Detect formulae
+        id: formulae-detect
         if: github.event_name == 'pull_request'
+        run: brew test-bot --only-formulae-detect
+
+      - name: Exclude try from formulae under test
+        id: exclude-try
+        if: github.event_name == 'pull_request'
+        shell: bash -euo pipefail {0}
+        env:
+          TESTING: ${{ steps.formulae-detect.outputs.testing_formulae }}
+        run: |
+          testing=""
+          if [[ -n "$TESTING" ]]; then
+            testing="$(printf '%s\n' "$TESTING" | tr ',' '\n' | awk -F/ '$NF != "try"' | paste -sd, -)"
+          fi
+          echo "testing_formulae=$testing" >> "$GITHUB_OUTPUT"
+
+      - name: Run brew test-bot --only-formulae
+        if: github.event_name == 'pull_request' && steps.exclude-try.outputs.testing_formulae != ''
+        shell: bash -euo pipefail {0}
+        env:
+          TESTING: ${{ steps.exclude-try.outputs.testing_formulae }}
+          ADDED: ${{ steps.formulae-detect.outputs.added_formulae }}
+          DELETED: ${{ steps.formulae-detect.outputs.deleted_formulae }}
+        run: |
+          args=(--only-formulae)
+          [[ -n "$TESTING" ]] && args+=(--testing-formulae="$TESTING")
+          [[ -n "$ADDED" ]] && args+=(--added-formulae="$ADDED")
+          [[ -n "$DELETED" ]] && args+=(--deleted-formulae="$DELETED")
+          brew test-bot "${args[@]}"
 
       - name: Upload bottles as artifact
         if: always() && github.event_name == 'pull_request'
