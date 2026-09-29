@@ -33,11 +33,25 @@ fully qualified name (incl. the `atlas-brown/tap/` prefix)
 when referring to formulae in external taps such as this one
 outside of search.
 
+## Tap Trust
+
+You need to provide explicit permission in order to load an untrusted tap or item.
+
+```sh
+brew trust atlas-brown/tap
+```
+
+or for a single item:
+
+```sh
+brew trust --formula atlas-brown/tap/name
+```
+
 ## What packages are available?
 
 ```sh
 brew install atlas-brown/tap/rt
-brew install atlas-brown/tap/sash
+brew install atlas-brown/tap/asash
 ```
 
 Both formulae currently require [Docker](https://docs.docker.com/get-docker/).
@@ -56,7 +70,3 @@ Formulae _in this tap_ are maintained by the
 
 - Formulae are updated as new versions are released
 - Issues and contributions can go through the Atlas Group maintainers of this tap
-
-## Contributing
-
-Guidelines for Contributing go here
