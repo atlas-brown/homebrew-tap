@@ -1,8 +1,8 @@
 class Asash < Formula
   desc "Static analysis for the Unix shell (runs via Docker)"
   homepage "https://github.com/atlas-brown/sash"
-  url "https://github.com/atlas-brown/sash/archive/refs/tags/v0.1.1.tar.gz"
-  sha256 "ae52254822b387289682f9c5f829e0d87d6ee02bec6e7ab71cab25d5881e8ede"
+  url "https://github.com/atlas-brown/sash/archive/refs/tags/v0.1.2.tar.gz"
+  sha256 "1e8a0ae2dfa6d185c664c35a2e6e26f489991bf1b432a54f82f30835b33f2860"
   license "MIT"
   head "https://github.com/atlas-brown/sash.git", branch: "master"
 
